@@ -4,11 +4,11 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn;
-use attribute_derive::Attribute;
+use attribute_derive::{Attribute, FromAttr};
 
 
 
-#[derive(Attribute, Default, Debug)]
+#[derive(FromAttr, Default, Debug)]
 #[attribute(ident = get_size)]
 struct StructFieldAttribute {
     #[attribute(conflicts = [size_fn, ignore])]
