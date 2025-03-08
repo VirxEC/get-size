@@ -50,13 +50,16 @@ struct TestStructNoGetSize {
 
 #[test]
 fn derive_struct_with_generics_and_ignore() {
-    let no_impl = TestStructNoGetSize { value: "World!".into() };
-
-    let test: TestStructGenericsIgnore<String, u64, TestStructNoGetSize> = TestStructGenericsIgnore {
-        value1: "Hello".into(),
-        value2: 123,
-        value3: no_impl,
+    let no_impl = TestStructNoGetSize {
+        value: "World!".into(),
     };
+
+    let test: TestStructGenericsIgnore<String, u64, TestStructNoGetSize> =
+        TestStructGenericsIgnore {
+            value1: "Hello".into(),
+            value2: 123,
+            value3: no_impl,
+        };
 
     assert_eq!(test.get_heap_size(), 5);
 }
@@ -78,7 +81,9 @@ fn get_size_helper<C>(_value: &C) -> usize {
 
 #[test]
 fn derive_struct_with_generics_and_helpers() {
-    let no_impl = TestStructNoGetSize { value: "World!".into() };
+    let no_impl = TestStructNoGetSize {
+        value: "World!".into(),
+    };
 
     let test: TestStructHelpers<String, u64, TestStructNoGetSize> = TestStructHelpers {
         value1: "Hello".into(),
@@ -166,7 +171,8 @@ fn derive_enum_generics() {
     let test: TestEnumGenerics<u64, String, TestStruct> = TestEnumGenerics::Variant1(123);
     assert_eq!(test.get_heap_size(), 0);
 
-    let test: TestEnumGenerics<u64, String, TestStruct> = TestEnumGenerics::Variant2("Hello".into());
+    let test: TestEnumGenerics<u64, String, TestStruct> =
+        TestEnumGenerics::Variant2("Hello".into());
     assert_eq!(test.get_heap_size(), 5);
 
     let test_struct = TestStruct {

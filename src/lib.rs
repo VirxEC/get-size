@@ -6,13 +6,13 @@ use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedL
 use std::convert::Infallible;
 use std::marker::{PhantomData, PhantomPinned};
 use std::num::{
-    NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32,
-    NonZeroU64, NonZeroU8, NonZeroUsize,
+    NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
+    NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
 };
 use std::rc::{Rc, Weak as RcWeak};
 use std::sync::atomic::{
-    AtomicBool, AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicU16, AtomicU32, AtomicU64, AtomicU8,
-    AtomicUsize, Ordering,
+    AtomicBool, AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicU16, AtomicU32,
+    AtomicU64, AtomicU8, AtomicUsize, Ordering,
 };
 use std::sync::{Arc, Mutex, RwLock, Weak as ArcWeak};
 use std::time::{Duration, Instant, SystemTime};
@@ -125,7 +125,7 @@ impl GetSize for Instant {}
 impl GetSize for Duration {}
 impl GetSize for SystemTime {}
 
-impl<'a, T> GetSize for Cow<'a, T>
+impl<T> GetSize for Cow<'_, T>
 where
     T: ToOwned,
     <T as ToOwned>::Owned: GetSize,
@@ -273,25 +273,29 @@ macro_rules! execute_tuple_macro_16 {
         $name!(v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8);
         $name!(v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9);
         $name!(v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10);
-        $name!(v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11, V11);
         $name!(
-            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11, V11, v12, V12
+            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11,
+            V11
         );
         $name!(
-            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11, V11, v12, V12,
-            v13, V13
+            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11,
+            V11, v12, V12
         );
         $name!(
-            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11, V11, v12, V12,
-            v13, V13, v14, V14
+            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11,
+            V11, v12, V12, v13, V13
         );
         $name!(
-            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11, V11, v12, V12,
-            v13, V13, v14, V14, v15, V15
+            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11,
+            V11, v12, V12, v13, V13, v14, V14
         );
         $name!(
-            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11, V11, v12, V12,
-            v13, V13, v14, V14, v15, V15, v16, V16
+            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11,
+            V11, v12, V12, v13, V13, v14, V14, v15, V15
+        );
+        $name!(
+            v1, V1, v2, V2, v3, V3, v4, V4, v5, V5, v6, V6, v7, V7, v8, V8, v9, V9, v10, V10, v11,
+            V11, v12, V12, v13, V13, v14, V14, v15, V15, v16, V16
         );
     };
 }

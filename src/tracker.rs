@@ -1,5 +1,5 @@
 use std::any::Any;
-use std::collections::BTreeMap;
+use std::collections::{btree_map, BTreeMap};
 use std::sync::{Arc, Mutex, RwLock};
 
 /// A tracker which makes sure that shared ownership objects are only accounted for once.
@@ -30,9 +30,9 @@ impl<T: GetSizeTracker> GetSizeTracker for Box<T> {
 
 impl<T: GetSizeTracker> GetSizeTracker for Mutex<T> {
     fn track<A: Any + 'static, B>(&mut self, addr: *const B, strong_ref: A) -> bool {
-        let mut tracker = self.lock().unwrap();
+        let tracker = self.get_mut().unwrap();
 
-        GetSizeTracker::track(&mut *tracker, addr, strong_ref)
+        GetSizeTracker::track(tracker, addr, strong_ref)
     }
 }
 
@@ -80,14 +80,14 @@ impl GetSizeTracker for StandardTracker {
     fn track<A: Any + 'static, B>(&mut self, addr: *const B, strong_ref: A) -> bool {
         let addr = addr as usize;
 
-        if self.inner.contains_key(&addr) {
-            return false;
-        } else {
+        if let btree_map::Entry::Vacant(e) = self.inner.entry(addr) {
             let strong_ref: Box<dyn Any + 'static> = Box::new(strong_ref);
 
-            self.inner.insert(addr, strong_ref);
+            e.insert(strong_ref);
 
-            return true;
+            true
+        } else {
+            false
         }
     }
 }
